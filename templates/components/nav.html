@@ -1,0 +1,110 @@
+{% load static %}
+<link rel="stylesheet" href="{% static 'styles/modals.css' %}" />
+<nav class="navbar navbar-expand-lg">
+  <div class="container">
+    <a class="navbar-brand fw-bold text-primary" href="#">ServiceDEV</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"><span class="navbar-toggler-icon"></span></button>
+    <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+      <div class="navbar-nav">
+        <a class="nav-link" href="/">Inicio</a>
+        <a class="nav-link" href="{% url 'app:productos' %}">Productos</a>
+        <a class="nav-link" href="{% url 'app:servicios' %}">Servicios</a>
+        <a class="nav-link" href="{% url 'app:conocenos' %}">Conócenos</a>
+        <a class="nav-link" href="{% url 'app:contacto' %}">Contacto</a>
+        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#registerModal">Registro</button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<div class="modal fade" id="registerModal" tabindex="-1" aria-labelledby="registerModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="registerModalLabel">Registro de Usuario</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="alert alert-success d-none" id="registerSuccess" role="alert">¡Registro completado con éxito!</div>
+        <form id="registerForm" class="needs-validation" novalidate action="/crear_usuario" method="post">
+          {% csrf_token %}
+          <div class="mb-3">
+            <label for="registerName" class="form-label">Nombre completo</label>
+            <input name="nombre_completo" type="text" class="form-control" id="registerName" required />
+            <div class="invalid-feedback">Por favor, ingresa tu nombre completo</div>
+          </div>
+          <div class="mb-3">
+            <label for="registerEmail" class="form-label">Correo electrónico</label>
+            <input name="correo" type="email" class="form-control" id="registerEmail" required />
+            <div class="invalid-feedback">Por favor, ingresa un correo electrónico válido</div>
+          </div>
+          <div class="mb-3">
+            <label for="registerPassword" class="form-label">Contraseña</label>
+            <div class="password-input-group">
+              <input name="password" type="password" class="form-control" id="registerPassword" required minlength="8" />
+              <button type="button" class="password-toggle" onclick="togglePassword('registerPassword')"><i class="fas fa-eye"></i></button>
+            </div>
+            <div class="invalid-feedback">La contraseña debe tener al menos 8 caracteres</div>
+          </div>
+          <div class="mb-3">
+            <label for="registerPasswordConfirm" class="form-label">Confirmar contraseña</label>
+            <div class="password-input-group">
+              <input type="password" class="form-control" id="registerPasswordConfirm" required />
+              <button type="button" class="password-toggle" onclick="togglePassword('registerPasswordConfirm')"><i class="fas fa-eye"></i></button>
+            </div>
+            <div class="invalid-feedback">Las contraseñas no coinciden</div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button type="submit" class="btn btn-primary" form="registerForm">Registrarse</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editModalLabel">Editar Perfil</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="alert alert-success d-none" id="editSuccess" role="alert">¡Cambios guardados con éxito!</div>
+        <form id="editForm" class="needs-validation" novalidate>
+          <div class="mb-3">
+            <label for="editName" class="form-label">Nombre completo</label>
+            <input type="text" class="form-control" id="editName" value="Usuario Ejemplo" required />
+            <div class="invalid-feedback">Por favor, ingresa tu nombre completo</div>
+          </div>
+          <div class="mb-3">
+            <label for="editEmail" class="form-label">Correo electrónico</label>
+            <input type="email" class="form-control" id="editEmail" value="usuario@ejemplo.com" required />
+            <div class="invalid-feedback">Por favor, ingresa un correo electrónico válido</div>
+          </div>
+          <div class="mb-3">
+            <label for="currentPassword" class="form-label">Contraseña actual</label>
+            <div class="password-input-group">
+              <input type="password" class="form-control" id="currentPassword" />
+              <button type="button" class="password-toggle" onclick="togglePassword('currentPassword')"><i class="fas fa-eye"></i></button>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="newPassword" class="form-label">Nueva contraseña (opcional)</label>
+            <div class="password-input-group">
+              <input type="password" class="form-control" id="newPassword" minlength="8" />
+              <button type="button" class="password-toggle" onclick="togglePassword('newPassword')"><i class="fas fa-eye"></i></button>
+            </div>
+            <div class="invalid-feedback">La contraseña debe tener al menos 8 caracteres</div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button type="submit" class="btn btn-primary" form="editForm">Guardar cambios</button>
+      </div>
+    </div>
+  </div>
+</div>

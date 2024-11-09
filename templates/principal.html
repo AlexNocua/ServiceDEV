@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block principal %}
+{% load static %}
+
+  <section class="hero-section">
+    <div class="container text-center animate__animated animate__fadeIn">
+      <h1 class="hero-title">ServiceDEV</h1>
+      <p class="hero-description">Descubre nuestra amplia gama de recursos tecnológicos en la provincia de Ubaté. Soluciones innovadoras para tus necesidades digitales.</p>
+    </div>
+  </section>
+
+  <div class="container services-container">
+    <div class="row g-4">
+      <div class="col-12 col-md-4 animate__animated animate__fadeInUp">
+        <div class="service-card">
+          <img class="img-principal" src="img/servicios.jpeg" alt="Servicios tecnológicos" />
+          <div class="card-body text-center">
+            <h3 class="card-title">Servicios</h3>
+            <a href="#servicios" class="card-link">Explora nuestra gama de productos electrónicos</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-12 col-md-4 animate__animated animate__fadeInUp" style="animation-delay: 0.2s">
+        <div class="service-card">
+          <img class="img-principal" src="img/contactos.jpeg" alt="Sobre nosotros" />
+          <div class="card-body text-center">
+            <h3 class="card-title">Conócenos</h3>
+            <a href="#conocenos" class="card-link">Descubre la historia de nuestra empresa</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-12 col-md-4 animate__animated animate__fadeInUp" style="animation-delay: 0.4s">
+        <div class="service-card">
+          <img class="img-principal" src="img/contactos.jpeg" alt="Contacto" />
+          <div class="card-body text-center">
+            <h3 class="card-title">Contáctanos</h3>
+            <a href="#contacto" class="card-link">Obtén información de contacto</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

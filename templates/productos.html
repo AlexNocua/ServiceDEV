@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block productos %}
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'styles/productos.css' %}" />
+  <section class="hero-section">
+    <h1 class="hero-title">Nuestros Productos</h1>
+    <p class="hero-description">Descubre nuestra selección de productos de alta calidad a precios increíbles.</p>
+  </section>
+
+  <div class="products-container">
+    <div class="product-card">
+      <img src="<%= producto.imagen %>" alt="<%= producto.nombre %>" class="product-image" />
+      <div class="product-info">
+        <h3 class="product-title"><%= producto.nombre %></h3>
+        <p class="product-description"><%= producto.descripcion %></p>
+        <div class="product-price">$<%= producto.precio.toFixed(2) %></div>
+        <a href="#" class="buy-button">Comprar ahora</a>
+      </div>
+    </div>
+    <!--    <div class="product-card">
+                <img src="" alt="" class="product-image">
+                <div class="product-info">
+                    <h3 class="product-title">
+
+                    </h3>
+                    <p class="product-description">
+
+                    </p>
+                    <div class="product-price">
+                    </div>
+                    <a href="#" class="buy-button">Comprar ahora</a>
+                </div>
+            </div>    -->
+  </div>
+{% endblock %}

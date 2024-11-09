@@ -1,0 +1,114 @@
+{% extends 'base.html' %}
+{% block contacto %}
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'styles/contacto.css' %}  " />
+
+  <section class="contact-hero">
+    <div class="container">
+      <h1 class="animate__animated animate__fadeIn">Contáctanos</h1>
+      <p class="animate__animated animate__fadeIn animate__delay-1s">Estamos aquí para ayudarte. ¿Tienes alguna pregunta o necesitas asistencia?</p>
+    </div>
+  </section>
+
+  <section class="py-5">
+    <div class="container">
+      <div class="row g-4">
+        <div class="col-lg-7">
+          <div class="contact-form">
+            <h3 class="mb-4">Envíanos un mensaje</h3>
+
+            <form action="{% url 'app:enviar_mensajes' %}" method="post">
+              {% csrf_token %}
+              <div class="row">
+                <div class="col-md-6">
+                  <input name="nombre" type="text" class="form-control" placeholder="Nombre" required />
+                </div>
+                <div class="col-md-6">
+                  <input name="telefono" type="tel" class="form-control" placeholder="Teléfono" required />
+                </div>
+              </div>
+              <input name="correo" type="email" class="form-control" placeholder="Correo electrónico" required />
+              <select name="servicios" class="form-select">
+                <option selected>Selecciona el tipo de servicio</option>
+                <option value="Soporte técnico">Soporte técnico</option>
+                <option value="Ventas">Ventas</option>
+                <option value="Reparaciones">Reparaciones</option>
+                <option value="Consultas generales">Consultas generales</option>
+              </select>
+              <textarea name="mensaje" class="form-control" rows="5" placeholder="Tu mensaje" required></textarea>
+              <button type="submit" class="custom-btn custom-btn-primary mt-3">Enviar mensaje</button>
+            </form>
+          </div>
+        </div>
+
+        <div class="col-lg-5">
+          <div class="row g-4">
+            <div class="col-md-12">
+              <div class="contact-info-card">
+                <div class="contact-icon">
+                  <i class="fas fa-map-marker-alt"></i>
+                </div>
+                <h4>Ubicación</h4>
+                <p>Carrera 7 #9-98, Ubaté, Cundinamarca</p>
+                <a href="https://www.google.com/maps/place/Cl.+7+%238-96+a+8-206,+Ubat%C3%A9,+Villa+de+San+Diego+de+Ubat%C3%A9,+Cundinamarca/@5.3088595,-73.8190201,17z/data=!3m1!4b1!4m15!1m8!3m7!1s0x8e40385e9fe47ea3:0x52f78c8451faa110!2sUbat%C3%A9,+Villa+de+San+Diego+de+Ubat%C3%A9,+Cundinamarca!3b1!8m2!3d5.3059954!4d-73.8148875!16s%2Fg%2F11bymwk656!3m5!1s0x8e40385db7ffac99:0xc5b09a2ae6578417!8m2!3d5.3088595!4d-73.8164398!16s%2Fg%2F11h1dypx7_?hl=es&entry=ttu&g_ep=EgoyMDI0MTAyMi4wIKXMDSoASAFQAw%3D%3D" class="custom-btn custom-btn-primary">Ver en mapa</a>
+              </div>
+            </div>
+            <div class="col-md-12">
+              <div class="contact-info-card">
+                <div class="contact-icon">
+                  <i class="fas fa-phone"></i>
+                </div>
+                <h4>Teléfonos</h4>
+                <p>Ventas: +57 (1) 855-1234</p>
+                <p>Soporte: +57 315 123-4567</p>
+                <p>WhatsApp: +57 315 123-4567</p>
+              </div>
+            </div>
+            <div class="col-md-12">
+              <div class="contact-info-card">
+                <div class="contact-icon">
+                  <i class="fas fa-envelope"></i>
+                </div>
+                <h4>Correo Electrónico</h4>
+                <p>info@servicedev.com</p>
+                <p>soporte@servicedev.com</p>
+                <div class="social-media-links">
+                  <a href="#"><i class="fab fa-facebook-f"></i></a>
+                  <a href="#"><i class="fab fa-twitter"></i></a>
+                  <a href="#"><i class="fab fa-instagram"></i></a>
+                  <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="py-5 bg-light">
+    <div class="container">
+      <h3 class="text-center mb-5">Preguntas Frecuentes</h3>
+      <div class="row">
+        <div class="col-lg-8 mx-auto">
+          <div class="faq-card">
+            <div class="faq-question">¿Cuáles son los horarios de atención?</div>
+            <p>Atendemos de lunes a viernes de 8:00 AM a 6:00 PM y sábados de 9:00 AM a 2:00 PM.</p>
+          </div>
+          <div class="faq-card">
+            <div class="faq-question">¿Cómo puedo agendar un servicio técnico?</div>
+            <p>Puedes agendar a través de nuestro formulario de contacto, llamando a nuestros números telefónicos o por WhatsApp.</p>
+          </div>
+          <div class="faq-card">
+            <div class="faq-question">¿Realizan visitas técnicas a domicilio?</div>
+            <p>Sí, contamos con servicio técnico a domicilio dentro de Ubaté y alrededores.</p>
+          </div>
+          <div class="faq-card">
+            <div class="faq-question">¿Cuál es el tiempo de respuesta para soporte técnico?</div>
+            <p>Nuestro tiempo de respuesta promedio es de 24 horas hábiles. Para casos urgentes, contamos con atención prioritaria.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+{% endblock %}

@@ -1,0 +1,125 @@
+{% extends 'base.html' %}
+
+{% block servicios %}
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'styles/servicios.css' %}" />
+
+  <section class="hero-section">
+    <h1 class="hero-title">Nuestros Servicios</h1>
+    <p class="hero-description">Ofrecemos soluciones profesionales adaptadas a tus necesidades con los más altos estándares de calidad.</p>
+  </section>
+
+  <div class="services-container">
+    <div class="service-card">
+      <div class="service-image-container">
+        <img src="/api/placeholder/400/320" alt="Consultoría" class="service-image" />
+        <div class="service-icon">
+          <i class="fas fa-lightbulb"></i>
+        </div>
+      </div>
+      <div class="service-content">
+        <h3 class="service-title">Consultoría Estratégica</h3>
+        <p class="service-description">Asesoramiento experto para impulsar el crecimiento de tu negocio.</p>
+        <ul class="service-features">
+          <li class="feature-item">
+            <i class="fas fa-check"></i>
+            <span>Análisis de mercado</span>
+          </li>
+          <li class="feature-item">
+            <i class="fas fa-check"></i>
+            <span>Planificación estratégica</span>
+          </li>
+          <li class="feature-item">
+            <i class="fas fa-check"></i>
+            <span>Optimización de procesos</span>
+          </li>
+        </ul>
+        <a href="#" class="service-button">Más información</a>
+      </div>
+    </div>
+
+    <div class="service-card">
+      <div class="service-image-container">
+        <img src="/api/placeholder/400/320" alt="Desarrollo" class="service-image" />
+        <div class="service-icon">
+          <i class="fas fa-code"></i>
+        </div>
+      </div>
+      <div class="service-content">
+        <h3 class="service-title">Desarrollo Digital</h3>
+        <p class="service-description">Soluciones tecnológicas innovadoras para tu empresa.</p>
+        <ul class="service-features">
+          <li class="feature-item">
+            <i class="fas fa-check"></i>
+            <span>Desarrollo web</span>
+          </li>
+          <li class="feature-item">
+            <i class="fas fa-check"></i>
+            <span>Aplicaciones móviles</span>
+          </li>
+          <li class="feature-item">
+            <i class="fas fa-check"></i>
+            <span>E-commerce</span>
+          </li>
+        </ul>
+        <a href="#" class="service-button">Más información</a>
+      </div>
+    </div>
+
+    <div class="service-card">
+      <div class="service-image-container">
+        <img src="/api/placeholder/400/320" alt="Marketing" class="service-image" />
+        <div class="service-icon">
+          <i class="fas fa-chart-line"></i>
+        </div>
+      </div>
+      <div class="service-content">
+        <h3 class="service-title">Marketing Digital</h3>
+        <p class="service-description">Estrategias efectivas para aumentar tu presencia online.</p>
+        <ul class="service-features">
+          <li class="feature-item">
+            <i class="fas fa-check"></i>
+            <span>SEO y SEM</span>
+          </li>
+          <li class="feature-item">
+            <i class="fas fa-check"></i>
+            <span>Redes sociales</span>
+          </li>
+          <li class="feature-item">
+            <i class="fas fa-check"></i>
+            <span>Email marketing</span>
+          </li>
+        </ul>
+        <a href="#" class="service-button">Más información</a>
+      </div>
+    </div>
+
+    <div class="service-card">
+      <div class="service-image-container">
+        <img src="/api/placeholder/400/320" alt="Soporte" class="service-image" />
+        <div class="service-icon">
+          <i class="fas fa-headset"></i>
+        </div>
+      </div>
+      <div class="service-content">
+        <h3 class="service-title">Soporte Técnico</h3>
+        <p class="service-description">Asistencia profesional 24/7 para tu tranquilidad.</p>
+        <ul class="service-features">
+          <li class="feature-item">
+            <i class="fas fa-check"></i>
+            <span>Soporte remoto</span>
+          </li>
+          <li class="feature-item">
+            <i class="fas fa-check"></i>
+            <span>Mantenimiento preventivo</span>
+          </li>
+          <li class="feature-item">
+            <i class="fas fa-check"></i>
+            <span>Resolución de incidencias</span>
+          </li>
+        </ul>
+        <a href="#" class="service-button">Más información</a>
+      </div>
+    </div>
+  </div>
+{% endblock %}
