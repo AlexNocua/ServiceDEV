@@ -57,6 +57,10 @@ body {
 }
 
 .service-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     border: none;
     border-radius: 1rem;
     overflow: hidden;
@@ -71,7 +75,7 @@ body {
 }
 
 .img-principal {
-    height: 220px;
+    height: 190px;
     width: 100%;
     object-fit: cover;
     transition: transform 0.3s ease;
