@@ -1,22 +1,87 @@
 {% load static %}
 <link rel="stylesheet" href="{% static 'styles/modals.css' %}" />
+<style>
+  .notificacion {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+    text-align: center;
+    top: 0px;
+    left: 35px;
+    border-radius: 50%;
+    width: 20px !important;
+    height: 20px !important;
+    background: #0039ff;
+  }
+  
+  .imagen_carrito {
+    width: 50px !important;
+    height: 50px !important;
+  }
+</style>
 <nav class="navbar navbar-expand-lg">
   <div class="container">
     <a class="navbar-brand fw-bold text-primary" href="#">ServiceDEV</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"><span class="navbar-toggler-icon"></span></button>
     <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
       <div class="navbar-nav">
-        <a class="nav-link" href="/">Inicio</a>
-        <a class="nav-link" href="{% url 'app:productos' %}">Productos</a>
-        <a class="nav-link" href="{% url 'app:servicios' %}">Servicios</a>
-        <a class="nav-link" href="{% url 'app:conocenos' %}">Conócenos</a>
-        <a class="nav-link" href="{% url 'app:contacto' %}">Contacto</a>
-        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#registerModal">Registro</button>
+        <a class="nav-link d-flex justify-content-center align-items-center text-center" href="/">Inicio</a>
+        <a class="nav-link d-flex justify-content-center align-items-center text-center" href="{% url 'app:productos' %}">Productos</a>
+        <a class="nav-link d-flex justify-content-center align-items-center text-center" href="{% url 'app:servicios' %}">Servicios</a>
+        <a class="nav-link d-flex justify-content-center align-items-center text-center" href="{% url 'app:conocenos' %}">Conócenos</a>
+        <a class="nav-link d-flex justify-content-center align-items-center text-center" href="{% url 'app:contacto' %}">Contacto</a>
+        {% if user.is_authenticated %}
+          <button class="btn btn-primary m-1" data-bs-toggle="modal" data-bs-target="#editModal">Editar perfil</button>
+          <a class="btn btn-primary m-1 d-flex justify-content-center align-items-center text-center" href="{% url 'app:cerrar_sesion' %}">Cerrar sesión</a>
+          <a class="d-flex nav-link justify-content-center align-items-center" href="{% url 'app:compras' %}">
+            <div class="position-relative">
+              <div class="notificacion position-absolute">{{ num_productos }}</div>
+              <img class="imagen_carrito" src="{% static 'img/carrito_compras.png' %}" alt="" />
+            </div>
+          </a>
+        {% else %}
+          <button class="btn btn-primary m-1" data-bs-toggle="modal" data-bs-target="#iniciar_sesion_Modal">Iniciar sesión</button>
+          <button class="btn btn-primary m-1" data-bs-toggle="modal" data-bs-target="#registerModal">Registro</button>
+        {% endif %}
       </div>
     </div>
   </div>
 </nav>
 
+<div class="modal fade" id="iniciar_sesion_Modal" tabindex="-1" aria-labelledby="iniciarSesionModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="iniciarSesionModalLabel">Iniciar Sesión</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="alert alert-success d-none" id="loginSuccess" role="alert">¡Sesión iniciada con éxito!</div>
+        <form id="loginForm" class="needs-validation" novalidate action="/iniciar_sesion" method="post">
+          {% csrf_token %}
+          <div class="mb-3">
+            <label for="loginEmail" class="form-label">Correo electrónico</label>
+            <input name="correo" type="email" class="form-control" id="loginEmail" required />
+            <div class="invalid-feedback">Por favor, ingresa un correo electrónico válido</div>
+          </div>
+          <div class="mb-3">
+            <label for="loginPassword" class="form-label">Contraseña</label>
+            <div class="password-input-group">
+              <input name="password" type="password" class="form-control" id="loginPassword" required />
+              <button type="button" class="password-toggle" onclick="togglePassword('loginPassword')"><i class="fas fa-eye"></i></button>
+            </div>
+            <div class="invalid-feedback">Por favor, ingresa tu contraseña</div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button type="submit" class="btn btn-primary" form="loginForm">Iniciar sesión</button>
+      </div>
+    </div>
+  </div>
+</div>
 <div class="modal fade" id="registerModal" tabindex="-1" aria-labelledby="registerModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
@@ -72,38 +137,33 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <div class="alert alert-success d-none" id="editSuccess" role="alert">¡Cambios guardados con éxito!</div>
-        <form id="editForm" class="needs-validation" novalidate>
+        <form id="editForm" class="needs-validation" action="{% url 'app:editar_perfil' %}" novalidate method="POST">
+          {% csrf_token %}
           <div class="mb-3">
             <label for="editName" class="form-label">Nombre completo</label>
-            <input type="text" class="form-control" id="editName" value="Usuario Ejemplo" required />
+            <input type="text" name="nombre_completo" class="form-control" id="editName" value="{{ nombre_completo }}" required />
             <div class="invalid-feedback">Por favor, ingresa tu nombre completo</div>
           </div>
           <div class="mb-3">
             <label for="editEmail" class="form-label">Correo electrónico</label>
-            <input type="email" class="form-control" id="editEmail" value="usuario@ejemplo.com" required />
+            <input type="email" name="correo" class="form-control" id="editEmail" value="{{ correo }}" required />
             <div class="invalid-feedback">Por favor, ingresa un correo electrónico válido</div>
           </div>
           <div class="mb-3">
             <label for="currentPassword" class="form-label">Contraseña actual</label>
-            <div class="password-input-group">
-              <input type="password" class="form-control" id="currentPassword" />
-              <button type="button" class="password-toggle" onclick="togglePassword('currentPassword')"><i class="fas fa-eye"></i></button>
-            </div>
+            <input type="password" name="current_password" class="form-control" id="currentPassword" required />
+            <div class="invalid-feedback">Por favor, ingresa tu contraseña actual</div>
           </div>
           <div class="mb-3">
             <label for="newPassword" class="form-label">Nueva contraseña (opcional)</label>
-            <div class="password-input-group">
-              <input type="password" class="form-control" id="newPassword" minlength="8" />
-              <button type="button" class="password-toggle" onclick="togglePassword('newPassword')"><i class="fas fa-eye"></i></button>
-            </div>
+            <input type="password" name="new_password" class="form-control" id="newPassword" minlength="8" />
             <div class="invalid-feedback">La contraseña debe tener al menos 8 caracteres</div>
           </div>
+          <button type="submit" class="btn btn-primary">Guardar cambios</button>
         </form>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-        <button type="submit" class="btn btn-primary" form="editForm">Guardar cambios</button>
       </div>
     </div>
   </div>

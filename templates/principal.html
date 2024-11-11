@@ -1,7 +1,7 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
 
 {% block principal %}
-{% load static %}
+  {% load static %}
 
   <section class="hero-section">
     <div class="container text-center animate__animated animate__fadeIn">
@@ -9,12 +9,31 @@
       <p class="hero-description">Descubre nuestra amplia gama de recursos tecnológicos en la provincia de Ubaté. Soluciones innovadoras para tus necesidades digitales.</p>
     </div>
   </section>
-
+  <style>
+    .img-principal {
+      height: 190px;
+      width: 40%;
+      object-fit: cover;
+      transition: transform 0.3s ease;
+    }
+    .service-card {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      border: none;
+      border-radius: 1rem;
+      overflow: hidden;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      background: white;
+      height: 100%;
+    }
+  </style>
   <div class="container services-container">
     <div class="row g-4">
       <div class="col-12 col-md-4 animate__animated animate__fadeInUp">
         <div class="service-card">
-          <img class="img-principal" src="img/servicios.jpeg" alt="Servicios tecnológicos" />
+          <img class="img-principal" src="{% static 'img/servicios.jpeg' %}" alt="Servicios tecnológicos" />
           <div class="card-body text-center">
             <h3 class="card-title">Servicios</h3>
             <a href="#servicios" class="card-link">Explora nuestra gama de productos electrónicos</a>
@@ -24,7 +43,7 @@
 
       <div class="col-12 col-md-4 animate__animated animate__fadeInUp" style="animation-delay: 0.2s">
         <div class="service-card">
-          <img class="img-principal" src="img/contactos.jpeg" alt="Sobre nosotros" />
+          <img class="img-principal" src="{% static 'img/contactos.jpeg' %}" alt="Sobre nosotros" />
           <div class="card-body text-center">
             <h3 class="card-title">Conócenos</h3>
             <a href="#conocenos" class="card-link">Descubre la historia de nuestra empresa</a>
@@ -34,7 +53,7 @@
 
       <div class="col-12 col-md-4 animate__animated animate__fadeInUp" style="animation-delay: 0.4s">
         <div class="service-card">
-          <img class="img-principal" src="img/contactos.jpeg" alt="Contacto" />
+          <img class="img-principal" src="{% static 'img/tecnologia.jpg' %}" alt="Contacto" />
           <div class="card-body text-center">
             <h3 class="card-title">Contáctanos</h3>
             <a href="#contacto" class="card-link">Obtén información de contacto</a>

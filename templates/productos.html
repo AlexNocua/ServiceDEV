@@ -1,36 +1,45 @@
 {% extends 'base.html' %}
 
+{% load static %}
+
 {% block productos %}
-  {% load static %}
+  {% load humanize %}
   <link rel="stylesheet" href="{% static 'styles/productos.css' %}" />
+
   <section class="hero-section">
     <h1 class="hero-title">Nuestros Productos</h1>
     <p class="hero-description">Descubre nuestra selección de productos de alta calidad a precios increíbles.</p>
   </section>
 
   <div class="products-container">
-    <div class="product-card">
-      <img src="<%= producto.imagen %>" alt="<%= producto.nombre %>" class="product-image" />
-      <div class="product-info">
-        <h3 class="product-title"><%= producto.nombre %></h3>
-        <p class="product-description"><%= producto.descripcion %></p>
-        <div class="product-price">$<%= producto.precio.toFixed(2) %></div>
-        <a href="#" class="buy-button">Comprar ahora</a>
-      </div>
-    </div>
-    <!--    <div class="product-card">
-                <img src="" alt="" class="product-image">
-                <div class="product-info">
-                    <h3 class="product-title">
-
-                    </h3>
-                    <p class="product-description">
-
-                    </p>
-                    <div class="product-price">
-                    </div>
-                    <a href="#" class="buy-button">Comprar ahora</a>
-                </div>
-            </div>    -->
+    {% if user.is_authenticated %}
+      {% for key, producto in productos.items %}
+        {% if producto.cantidad != 0 %}
+          <div class="product-card">
+            <img src="data:image/png;base64,{{ producto.imagen_producto }}" alt="{{ producto.nombre_producto }}" class="product-image img-fluid" /> <div class="product-info">
+              <h3 class="product-title">{{ producto.nombre_producto }}</h3>
+              <p class="product-description">{{ producto.descripcion }}</p>
+              <p class="product-description">Unidades: {{ producto.cantidad }}</p>
+              <div class="product-price">${{ producto.precio|floatformat:0|intcomma }}</div>
+              <a href="{% url 'app:anadir_producto_carrito' producto.id_producto id_user %}" class="buy-button">Añadir al carrito</a>
+            </div>
+          </div>
+        {% endif %}
+      {% endfor %}
+    {% else %}
+      {% for key, producto in productos.items %}
+        {% if producto.cantidad != 0 %}
+          <div class="product-card">
+            <img src="data:image/png;base64,{{ producto.imagen_producto }}" alt="{{ producto.nombre_producto }}" class="product-image img-fluid" /> <div class="product-info">
+              <h3 class="product-title">{{ producto.nombre_producto }}</h3>
+              <p class="product-description">{{ producto.descripcion }}</p>
+              <p class="product-description">Unidades: {{ producto.cantidad }}</p>
+              <div class="product-price">${{ producto.precio|floatformat:0|intcomma }}</div>
+              <small><strong>Inicia sesión para comprar un producto.</strong></small>
+            </div>
+          </div>
+        {% endif %}
+      {% endfor %}
+    {% endif %}
   </div>
 {% endblock %}

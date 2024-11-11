@@ -1,0 +1,158 @@
+{% extends 'base.html' %}
+{% block compras %}
+  {% load humanize %}
+  <script>
+    let monto = 0
+    function suma(valor) {
+      monto += Number(valor)
+      return monto
+    }
+  </script>
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'styles/conocenos.css' %}" />
+  <div class="checkout-container m-3">
+    <div class="row g-4">
+      <div class="col-md-5">
+        {% if productos_pendientes %}
+          <style>
+            .img-comprados {
+              width: 80px;
+              height: 80px;
+            }
+          </style>
+          {% for key, producto in productos_pendientes.items %}
+            <div class="card mb-4">
+              <div class="d-flex justify-content-center align-items-center p-4">
+                <div>
+                  <h4 class="product-title">{{ producto.producto.nombre }}</h4>
+                  <small class="text-muted">{{ producto.producto.descripcion }}</small>
+                  <div class="product-price">${{ producto.producto.precio|floatformat:0|intcomma }}</div>
+                  <a href="{% url 'app:eliminar_producto' producto.id %}" 
+                  class="btn btn-danger p-2 mt-2" 
+                  onclick="confirmarEliminacion(event, this)">
+                  Eliminar del Carrito
+               </a>
+                               </div>
+                <img class="img-comprados" src="data:image/png;base64,{{ producto.imagen }}" alt="{{ producto.nombre_producto }}" class="product-image img-fluid" />
+              </div>
+            </div>
+            <script>
+              console.log(suma('{{ producto.producto.precio|escapejs }}'))
+            </script>
+          {% endfor %}
+          <script>
+            function confirmarEliminacion(event, elemento) {
+                event.preventDefault(); 
+            
+                Swal.fire({
+                    title: '¿Estás seguro?',
+                    text: "¡No podrás revertir esto!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: 'Sí, eliminar',
+                    cancelButtonText: 'Cancelar'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = elemento.href;
+                    }
+                });
+            }
+            </script>
+            
+        {% endif %}
+
+        <div class="summary-card">
+          <h3 class="section-title h5">Resumen de Compra</h3>
+          <small class="text-muted">Este es el resumen de tu compra, incluyendo el total a pagar.</small>
+          <hr />
+          <div class="d-flex justify-content-between">
+            <strong>Total</strong>
+            <strong id="total" class="product-price"></strong>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-7">
+        <div class="card">
+          <div class="p-4">
+            <form id="compraForm" action="{% url 'app:nueva_venta' %}" method="post">
+              {% csrf_token %}
+              <div class="mb-4">
+                <div class="d-flex align-items-center mb-3">
+                  <span class="step-number p-1">1</span>
+                  <h3 class="section-title h5 mb-0">Información Personal</h3>
+                </div>
+                <div class="row">
+                  <div class="col-md-6">
+                    <label class="form-label">Nombre Completo</label>
+                    <input name="nombre" type="text" class="form-control" value="{{ nombre_completo }}" readonly />
+                  </div>
+
+                  <div class="col-12">
+                    <label class="form-label">Email</label>
+                    <input name="correo" type="email" class="form-control" value="{{ correo }}" readonly />
+                  </div>
+                </div>
+              </div>
+
+              <div class="mb-4">
+                <div class="d-flex align-items-center mb-3">
+                  <span class="step-number p-1">2</span>
+                  <h3 class="section-title h5 mb-0">Dirección de Envío</h3>
+                </div>
+                <div class="row">
+                  <div class="col-12">
+                    <label class="form-label">Dirección</label>
+                    <input name="direccion" type="text" class="form-control" />
+                  </div>
+                  <div class="col-md-4">
+                    <label class="form-label">Ciudad o municipio</label>
+                    <input name="ciudad" type="text" class="form-control" />
+                  </div>
+                  <div class="col-md-4">
+                    <label class="form-label">Departamento</label>
+                    <input name="departamento" type="text" class="form-control" />
+                  </div>
+                  <div class="col-md-4">
+                    <label class="form-label">A pagar</label>
+                    <input name="valortotal" class="form-control" id="campo_monto" type="text" readonly />
+                  </div>
+                </div>
+              </div>
+
+              <button type="button" class="btn btn-primary m-1" onclick="confirmarCompra()">Confirmar Compra</button>
+            </form>
+
+            <script>
+              function confirmarCompra() {
+                Swal.fire({
+                  title: '¿Estás seguro de que deseas confirmar la compra?',
+                  html: `Si confirmas, nuestro asistente de ventas te guiará en los siguientes pasos.<br><strong>Monto total: $ ${monto.toLocaleString('es-CO')}</strong>`,
+                  icon: 'warning',
+                  showCancelButton: true,
+                  confirmButtonColor: '#3085d6',
+                  cancelButtonColor: '#d33',
+                  confirmButtonText: 'Sí, confirmar',
+                  cancelButtonText: 'Cancelar'
+                }).then((result) => {
+                  if (result.isConfirmed) {
+                    Swal.fire('¡Compra confirmada!', 'Nuestro asesor de ventas se comunicará contigo para continuar el proceso.', 'success')
+                    document.getElementById('compraForm').submit()
+                  }
+                })
+              }
+            </script>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    const campo_monto = document.getElementById('campo_monto')
+    const valortotal = document.getElementById('total')
+    valortotal.innerText = '$' + monto.toLocaleString('es-CO')
+    campo_monto.value = '$' + monto.toLocaleString('es-CO')
+  </script>
+{% endblock %}
