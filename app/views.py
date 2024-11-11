@@ -8,6 +8,8 @@ from app.models import ModelDetalleVenta, ModelProductos, ModelUsuarios, ModelVe
 from app.utils.busquedas import devolver_productos, devolver_productos_pendientes
 from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 from app.utils.utilidades import correo_nueva_compra, datos_usuario, convertir_imagen
+from django.contrib.auth.hashers import make_password
+
 
 # Create your views here.
 
@@ -156,37 +158,31 @@ def iniciar_sesion(request):
 def editar_perfil(request):
     if request.method == "POST":
         form = UsuarioEditForm(request.POST, instance=request.user)
-
         current_password = request.POST.get("current_password")
         new_password = request.POST.get("new_password")
 
         if form.is_valid():
-            user = authenticate(username=request.user.correo, password=current_password)
-            if user is not None:
-                if new_password:
-                    request.user.set_password(new_password)
-                    request.user.save()
-                    update_session_auth_hash(request, request.user)
-
-                form.save()
-                messages.success(request, "¡Perfil actualizado con éxito!")
-                return redirect("app:principal")
-
-            else:
-                messages.error(request, "La contraseña actual no es correcta.")
-                return redirect("app:editar_perfil")
-
+            if new_password:
+                if current_password:
+                    user = authenticate(username=request.user.correo, password=current_password)
+                    if user is not None:
+                        request.user.set_password(new_password)
+                        update_session_auth_hash(request, request.user)
+                    else:
+                        messages.error(request, "La contraseña actual no es correcta.")
+                        return redirect("app:principal")
+                else:
+                    messages.error(request, "Debes ingresar la contraseña actual para cambiar la contraseña.")
+                    return redirect("app:principal")
+            
+            form.save()
+            messages.success(request, "¡Perfil actualizado con éxito!")
+            return redirect("app:principal")
         else:
-            messages.error(
-                request, "Hubo un error al actualizar tu perfil. Intenta nuevamente."
-            )
-            return redirect("app:editar_perfil")
+            messages.error(request, "Hubo un error al actualizar tu perfil, el correo ingresado ya existe. Intenta nuevamente.")
+            return redirect("app:principal")
 
-    else:
-        form = UsuarioEditForm(instance=request.user)
-
-    return redirect("app:editar_perfil")
-
+    return redirect("app:principal")
 
 @login_required
 def cerrar_sesion(request):
@@ -201,15 +197,16 @@ def cerrar_sesion(request):
 ###########################################################
 # end_point crear usuario
 def crear_usuario(request):
-    from django.contrib.auth.hashers import make_password
-
     if request.method == "POST":
         nombre_completo = request.POST.get("nombre_completo")
         correo = request.POST.get("correo")
         password = request.POST.get("password")
 
-        password_encriptada = make_password(password)
+        if ModelUsuarios.objects.filter(correo=correo).exists():
+            messages.error(request, "Este correo ya está registrado. Intenta con otro.")
+            return redirect("app:principal")
 
+        password_encriptada = make_password(password)
         nuevo_usuario = ModelUsuarios.objects.create(
             nombre_completo=nombre_completo, correo=correo, password=password_encriptada
         )
